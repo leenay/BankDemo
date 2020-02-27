@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using BankDemo.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BankDemo.Controllers
@@ -76,6 +77,16 @@ namespace BankDemo.Controllers
             GlobalCustomers.Customers.Remove(customer);
 
             return NoContent();
+        }
+
+        [Route("{id}")]
+        [HttpPatch]
+        public ActionResult<Customer> PatchCustomer(int id, [FromBody] JsonPatchDocument<Customer> patchModel)
+        {
+            var customerToUpdate = GlobalCustomers.Customers.Find(x => x.Id == id);
+            patchModel.ApplyTo(customerToUpdate);
+            return Ok();
+
         }
     }
 }
