@@ -38,7 +38,7 @@ namespace BankDemo.Controllers
         public ActionResult<Customer> PostCustomer(Customer customer)
         {
             GlobalCustomers.Customers.Add(customer);
-            return CreatedAtAction("Get", new { id = customer.Id }, customer);
+            return CreatedAtAction("GetCustomer", new { id = customer.Id }, customer);
         }
 
         // PUT: api/Customer/5
@@ -54,7 +54,7 @@ namespace BankDemo.Controllers
             if (customerToUpdate == null)
             {
                 GlobalCustomers.Customers.Add(customer);
-                return CreatedAtAction("Get", new { id = customer.Id }, customer);
+                return CreatedAtAction("GetCustomer", new { id = customer.Id }, customer);
             }
             else
             {
