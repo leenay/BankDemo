@@ -2,45 +2,80 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BankDemo.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BankDemo.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class CustomerController : ControllerBase
     {
         // GET: api/Customer
         [HttpGet]
-        public IEnumerable<string> Get()
+        public ActionResult<IEnumerable<Customer>> GetCustomers()
         {
-            return new string[] { "value1", "value2" };
+            return GlobalCustomers.Customers;
         }
 
         // GET: api/Customer/5
         [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
+        public ActionResult<Customer> GetCustomer(int id)
         {
-            return "value";
+            var customer = GlobalCustomers.Customers.Find(x => x.Id == id);
+
+            if (customer == null)
+            {
+                return NotFound();
+            }
+
+            return customer;
         }
 
         // POST: api/Customer
         [HttpPost]
-        public void Post([FromBody] string value)
+        public ActionResult<Customer> PostCustomer(Customer customer)
         {
+            GlobalCustomers.Customers.Add(customer);
+            return CreatedAtAction("Get", new { id = customer.Id }, customer);
         }
 
         // PUT: api/Customer/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public ActionResult PutCustomer(int id, [FromBody] Customer customer)
         {
+            if (id != customer.Id)
+            {
+                return BadRequest();
+            }
+
+            var customerToUpdate = GlobalCustomers.Customers.Find(x => x.Id == id);
+            if (customerToUpdate == null)
+            {
+                GlobalCustomers.Customers.Add(customer);
+                return CreatedAtAction("Get", new { id = customer.Id }, customer);
+            }
+            else
+            {
+                customerToUpdate.Name = customer.Name;
+                return Ok();
+            }
         }
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public ActionResult<Customer> DeleteCustomer(int id)
         {
+            var customer = GlobalCustomers.Customers.Find(x => x.Id == id);
+            if (customer == null)
+            {
+                return NotFound();
+            }
+
+            GlobalCustomers.Customers.Remove(customer);
+
+            return NoContent();
         }
     }
 }
