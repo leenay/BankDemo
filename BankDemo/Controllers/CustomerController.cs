@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using BankDemo.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 
@@ -85,7 +81,7 @@ namespace BankDemo.Controllers
         {
             var customerToUpdate = GlobalCustomers.Customers.Find(x => x.Id == id);
             patchModel.ApplyTo(customerToUpdate);
-            return Ok();
+            return (customerToUpdate);
 
         }
     }
