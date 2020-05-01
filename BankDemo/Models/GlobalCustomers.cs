@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace BankDemo.Models
 {
@@ -10,10 +7,13 @@ namespace BankDemo.Models
         static GlobalCustomers()
         {
             Customers = new List<Customer> {
-                new Customer { Id = 1, Name = "Customer1", Accounts = new List<Account>{ new Account { SortCode = "010101", AccountNumber = "00000001" } } },
-                new Customer { Id = 2, Name = "Customer2", Accounts = new List<Account>{ new Account { SortCode = "020202", AccountNumber = "00000002" },
-                                                                                         new Account { SortCode = "030303", AccountNumber = "00000003"} 
-                                                                                       } 
+                new Customer { Id = 1, Name = "Customer1", 
+                    Accounts = new List<Account>{ new Account { SortCode = "010101", AccountNumber = "00000001" } } 
+                },
+                new Customer { Id = 2, Name = "Customer2", 
+                    Accounts = new List<Account>{ new Account { SortCode = "020202", AccountNumber = "00000002" },
+                                                  new Account { SortCode = "030303", AccountNumber = "00000003"} 
+                    } 
                 }
             };
         }
