@@ -75,13 +75,23 @@ namespace BankDemo.Controllers
             return NoContent();
         }
 
-        [Route("{id}")]
-        [HttpPatch]
+        [HttpPatch("{id}")]
         public ActionResult<Customer> PatchCustomer(int id, [FromBody] JsonPatchDocument<Customer> patchModel)
         {
             var customerToUpdate = GlobalCustomers.Customers.Find(x => x.Id == id);
-            patchModel.ApplyTo(customerToUpdate);
-            return (customerToUpdate);
+            if (customerToUpdate == null)
+            {
+                return NotFound();
+            }
+            
+            patchModel.ApplyTo(customerToUpdate, ModelState);
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            return new ObjectResult(customerToUpdate);
 
         }
     }
